@@ -142,6 +142,22 @@ infographics/
 └── README.md                # This file
 ```
 
+## Releases
+
+To create a new release:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+GitHub Actions will automatically build binaries for:
+- macOS (Apple Silicon & Intel)
+- Windows (x64)
+- Linux (x64)
+
+Download from [Releases](../../releases) page.
+
 ## License
 
 MIT

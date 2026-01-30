@@ -142,6 +142,22 @@ infographics/
 └── README.md                # README (English)
 ```
 
+## Релизы
+
+Для создания нового релиза:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+GitHub Actions автоматически соберёт бинарники для:
+- macOS (Apple Silicon и Intel)
+- Windows (x64)
+- Linux (x64)
+
+Скачать можно на странице [Releases](../../releases).
+
 ## Лицензия
 
 MIT
