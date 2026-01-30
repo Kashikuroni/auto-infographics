@@ -152,9 +152,8 @@ git push origin v0.1.0
 ```
 
 GitHub Actions will automatically build binaries for:
-- macOS (Apple Silicon & Intel)
+- macOS (Apple Silicon)
 - Windows (x64)
-- Linux (x64)
 
 Download from [Releases](../../releases) page.
 

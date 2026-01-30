@@ -152,9 +152,8 @@ git push origin v0.1.0
 ```
 
 GitHub Actions автоматически соберёт бинарники для:
-- macOS (Apple Silicon и Intel)
+- macOS (Apple Silicon)
 - Windows (x64)
-- Linux (x64)
 
 Скачать можно на странице [Releases](../../releases).
 
