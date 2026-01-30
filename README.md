@@ -1,138 +1,142 @@
 # Infographics Editor
 
-Десктопное приложение для создания продуктовых инфографик. Позволяет быстро создавать визуальные карточки товаров с текстом и изображениями.
+Desktop application for creating product infographics. Quickly create visual product cards with text and images.
 
-## Стек технологий
+[Русская версия](docs/README-ru.md)
+
+## Tech Stack
 
 ### Frontend
-- **React 19** — UI библиотека
-- **TypeScript** — типизация
-- **Vite** — сборщик
-- **Zustand + Immer** — управление состоянием
-- **react-konva** — canvas редактор
-- **Radix UI** — UI примитивы (Dialog, etc.)
+- **React 19** — UI library
+- **TypeScript** — type safety
+- **Vite** — build tool
+- **Zustand + Immer** — state management
+- **react-konva** — canvas editor
+- **Radix UI** — UI primitives (Dialog, etc.)
 
 ### Backend
-- **Tauri v2** — десктопный фреймворк
-- **Rust** — бэкенд логика
-- **font-kit** — доступ к системным шрифтам
+- **Tauri v2** — desktop framework
+- **Rust** — backend logic
+- **font-kit** — system fonts access
 
-## Установка и запуск
+## Installation & Development
 
-### Требования
+### Prerequisites
 
 - [Node.js](https://nodejs.org/) v18+
 - [Rust](https://www.rust-lang.org/tools/install) (latest stable)
 - [Tauri CLI](https://tauri.app/start/prerequisites/)
 
-### Установка зависимостей
+### Install Dependencies
 
 ```bash
-# Frontend зависимости
+# Frontend dependencies
 cd frontend
 npm install
 
-# Rust зависимости собираются автоматически при первом запуске
+# Rust dependencies are built automatically on first run
 ```
 
-### Запуск в режиме разработки
+### Run in Development Mode
 
 ```bash
-# Из корня проекта
+# From project root
 cd frontend
 npm run tauri:dev
 ```
 
-Приложение откроется в отдельном окне. Hot reload работает для frontend кода.
+The app will open in a separate window. Hot reload works for frontend code.
 
-### Сборка
+### Build
 
 ```bash
 cd frontend
 npm run tauri:build
 ```
 
-Готовое приложение будет в `src-tauri/target/release/bundle/`.
+The built application will be in `src-tauri/target/release/bundle/`.
 
-## Текущий функционал
+## Current Features
 
-### 1. Выбор рабочей директории
-- При запуске выбирается папка с изображениями товаров
-- Поддерживаемые форматы: JPG, PNG, GIF, WebP
+### 1. Working Directory Selection
+- Select a folder with product images on startup
+- Supported formats: JPG, PNG, GIF, WebP
 
-### 2. Галерея изображений
-- Отображение всех изображений из выбранной папки
-- Пагинация (15 изображений на страницу)
-- Множественный выбор через чекбоксы
-- Кнопки "Выбрать все" / "Снять выделение"
+### 2. Image Gallery
+- Display all images from the selected folder
+- Pagination (15 images per page)
+- Multiple selection via checkboxes
+- "Select All" / "Deselect All" buttons
 
-### 3. Визуальный редактор
+### 3. Visual Editor
 
-#### Холст (Canvas)
-- Выбор соотношения сторон: 1:1, 4:3, 16:9
-- Настройка размеров (ширина/высота)
-- Цвет фона
-- Зум колесиком мыши / трекпадом
-- Fit to view при загрузке
+#### Canvas
+- Aspect ratio presets: 1:1, 4:3, 16:9
+- Custom dimensions (width/height)
+- Background color
+- Mouse wheel / trackpad zoom
+- Fit to view on load
 
-#### Слои (Layers Panel)
-- Frame — настройки холста
-- Главное изображение (Hero) — основное фото товара
-- Текстовые слои
-- Дополнительные изображения
-- Переключение видимости слоёв
-- Удаление слоёв (кроме Hero)
+#### Layers Panel
+- Frame — canvas settings
+- Hero Image — main product photo
+- Text layers
+- Additional images
+- Toggle layer visibility
+- Delete layers (except Hero)
 
-#### Объекты
-- **Текст**: шрифт, размер, цвет, выравнивание, жирность
-- **Изображения**: позиция, размер, поворот, прозрачность
-- Перетаскивание объектов
-- Изменение размера через handles
-- Поворот от центра объекта
+#### Objects
+- **Text**: font, size, color, alignment, weight
+- **Images**: position, size, rotation, opacity
+- Drag objects
+- Resize via handles
+- Rotation around object center
 
-#### Выравнивание
-- По горизонтали: лево / центр / право
-- По вертикали: верх / середина / низ
+#### Alignment
+- Horizontal: left / center / right
+- Vertical: top / middle / bottom
 
-#### Свойства (Properties Panel)
-- Отображаются только для выбранного элемента
-- Transform: X, Y, ширина, высота, поворот, прозрачность
-- Для текста: ключ (key), контент, шрифт, размер, цвет
+#### Properties Panel
+- Shows only for selected element
+- Transform: X, Y, width, height, rotation, opacity
+- For text: key, content, font, size, color
 
-### 4. Шаблоны
-- Сохранение текущего состояния редактора как шаблона
-- Загрузка сохранённых шаблонов
-- Удаление шаблонов
-- Шаблоны хранятся в `.infographics-templates/` внутри рабочей директории
+### 4. Templates
+- Save current editor state as template
+- Load saved templates
+- Delete templates
+- Templates stored in `.infographics-templates/` inside working directory
 
-### 5. Замена главного изображения
-- Кнопка "Заменить изображение" в свойствах Hero
-- Открывает галерею для выбора нового изображения
+### 5. Hero Image Replacement
+- "Replace Image" button in Hero properties
+- Opens gallery to select new image
 
-## Структура проекта
+## Project Structure
 
 ```
 infographics/
-├── frontend/                # React приложение
+├── frontend/                # React application
 │   ├── src/
-│   │   ├── components/      # React компоненты
-│   │   │   ├── Canvas/      # Холст редактора
-│   │   │   ├── LayersPanel/ # Панель слоёв
-│   │   │   ├── PropertiesPanel/ # Панель свойств
-│   │   │   ├── Toolbar/     # Верхняя панель
-│   │   │   └── Gallery/     # Галерея изображений
+│   │   ├── components/      # React components
+│   │   │   ├── Canvas/      # Editor canvas
+│   │   │   ├── LayersPanel/ # Layers panel
+│   │   │   ├── PropertiesPanel/ # Properties panel
+│   │   │   ├── Toolbar/     # Top toolbar
+│   │   │   └── Gallery/     # Image gallery
 │   │   ├── store/           # Zustand store
-│   │   ├── hooks/           # React хуки
-│   │   └── types/           # TypeScript типы
+│   │   ├── hooks/           # React hooks
+│   │   └── types/           # TypeScript types
 │   └── package.json
 ├── src-tauri/               # Tauri backend (Rust)
-│   ├── src/lib.rs           # Tauri команды
-│   ├── capabilities/        # Разрешения
+│   ├── src/lib.rs           # Tauri commands
+│   ├── capabilities/        # Permissions
 │   └── Cargo.toml
-├── CLAUDE.md                # Технические заметки
-└── README.md                # Этот файл
+├── docs/                    # Documentation
+│   └── README-ru.md         # Russian README
+├── CLAUDE.md                # Technical notes
+└── README.md                # This file
 ```
 
-## Лицензия
+## License
 
 MIT
