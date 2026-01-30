@@ -1,0 +1,19 @@
+[[permission]]
+identifier = "allow-save-template"
+description = "Allow saving templates to the templates directory"
+commands.allow = ["save_template"]
+
+[[permission]]
+identifier = "allow-load-template"
+description = "Allow loading templates from the templates directory"
+commands.allow = ["load_template"]
+
+[[permission]]
+identifier = "allow-list-templates"
+description = "Allow listing available templates"
+commands.allow = ["list_templates"]
+
+[[permission]]
+identifier = "allow-delete-template"
+description = "Allow deleting templates"
+commands.allow = ["delete_template"]

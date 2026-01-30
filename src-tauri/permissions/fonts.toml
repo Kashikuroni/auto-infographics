@@ -1,0 +1,4 @@
+[[permission]]
+identifier = "allow-get-system-fonts"
+description = "Allow getting system fonts list"
+commands.allow = ["get_system_fonts"]

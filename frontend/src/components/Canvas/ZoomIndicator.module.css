@@ -1,0 +1,15 @@
+.indicator {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  user-select: none;
+  pointer-events: none;
+  z-index: 10;
+}

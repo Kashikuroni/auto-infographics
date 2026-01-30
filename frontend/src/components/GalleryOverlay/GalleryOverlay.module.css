@@ -1,0 +1,265 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 900px;
+  max-height: 80vh;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  z-index: 101;
+  animation: slideIn 0.2s ease;
+  overflow: hidden;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.count {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.controlButton {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.controlButton:hover {
+  background: var(--bg-hover);
+}
+
+.grid {
+  flex: 1;
+  min-height: 0;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-auto-rows: min-content;
+  gap: 12px;
+  overflow-y: auto;
+  align-content: start;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.footerLeft {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.footerCenter {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.footerRight {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pageSizeLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.pageSizeSelect {
+  padding: 5px 8px;
+  font-size: 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pageButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.15s ease;
+}
+
+.pageButton:hover:not(:disabled) {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 0 6px;
+}
+
+.pageInput {
+  width: 40px;
+  padding: 5px 6px;
+  font-size: 12px;
+  text-align: center;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+}
+
+.pageInput:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.closeButton {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  background: var(--accent-color);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.closeButton:hover {
+  background: var(--accent-hover);
+}
+
+/* Replace mode cards */
+.replaceCard {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.replaceCard:hover {
+  border-color: var(--accent-color);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.replaceImageWrapper {
+  position: relative;
+  aspect-ratio: 1;
+  min-height: 100px;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+}
+
+.replaceImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.replaceCard:hover .replaceImage {
+  transform: scale(1.05);
+}
+
+.replaceName {
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}

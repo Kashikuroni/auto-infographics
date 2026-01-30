@@ -1,0 +1,4 @@
+[[permission]]
+identifier = "allow-list-images-in-directory"
+description = "Allow listing images in a directory"
+commands.allow = ["list_images_in_directory"]
