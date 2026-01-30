@@ -534,7 +534,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           s.templates = templates.map((t) => ({
             name: t.name,
             path: t.path,
-            createdAt: t.created_at,
+            createdAt: t.createdAt,
           }));
         });
       } catch (error) {

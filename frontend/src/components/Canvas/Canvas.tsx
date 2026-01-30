@@ -35,9 +35,6 @@ function CanvasImage({
     );
   }
 
-  const baseX = (commonProps.x as number) || 0;
-  const baseY = (commonProps.y as number) || 0;
-
   if (scaleMode === 'fill') {
     // Cover the entire area, cropping if necessary
     const imageRatio = image.width / image.height;
@@ -114,7 +111,6 @@ export function Canvas() {
     zoom,
     selectObject,
     selectFrame,
-    clearSelection,
     updateObject,
     setZoom,
     fitToView,
