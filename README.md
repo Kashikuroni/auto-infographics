@@ -1,6 +1,11 @@
 # Infographics Editor
 
+![Status](https://img.shields.io/badge/status-alpha-orange)
+
 Desktop application for creating product infographics. Quickly create visual product cards with text and images.
+
+> [!WARNING]
+> This project is in early development. Many features are incomplete or may not work as expected. Expect bugs and breaking changes.
 
 [Русская версия](docs/README-ru.md)
 
