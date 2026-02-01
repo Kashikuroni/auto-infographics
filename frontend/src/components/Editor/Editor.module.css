@@ -6,6 +6,14 @@
   overflow: hidden;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .workspace {
   display: grid;
   grid-template-columns: 240px 1fr 280px;

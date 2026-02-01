@@ -16,6 +16,7 @@
     "allow-save-template",
     "allow-load-template",
     "allow-list-templates",
-    "allow-delete-template"
+    "allow-delete-template",
+    "allow-generate-infographics"
   ]
 }

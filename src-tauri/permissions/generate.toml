@@ -1,0 +1,4 @@
+[[permission]]
+identifier = "allow-generate-infographics"
+description = "Allows generating infographics from table data"
+commands.allow = ["generate_infographics", "get_cpu_info"]

@@ -16,6 +16,7 @@ export interface ImageFile {
 
 export type AppPhase = 'startup' | 'gallery' | 'editor';
 export type GalleryMode = 'select' | 'replace';
+export type EditorTab = 'gallery' | 'editor' | 'table';
 export type HorizontalAlignment = 'left' | 'center' | 'right';
 export type VerticalAlignment = 'top' | 'middle' | 'bottom';
 
@@ -27,6 +28,10 @@ export interface TemplateInfo {
   path: string;
   createdAt: string;
 }
+
+// Table data: imagePath -> { textKey -> value }
+export type TableRowData = Record<string, string>;
+export type TableData = Record<string, TableRowData>;
 
 interface EditorState {
   // App phase
@@ -40,7 +45,10 @@ interface EditorState {
   allImages: ImageFile[];
   selectedImagePaths: Set<string>;
 
-  // Gallery overlay
+  // Active tab in editor
+  activeTab: EditorTab;
+
+  // Gallery overlay (for replace mode only)
   isGalleryOverlayOpen: boolean;
   galleryMode: GalleryMode;
 
@@ -58,6 +66,12 @@ interface EditorState {
 
   // Templates
   templates: TemplateInfo[];
+
+  // Table data for batch processing
+  tableData: TableData;
+
+  // Current active template (for auto-save and output directory)
+  currentTemplateName: string | null;
 }
 
 interface EditorActions {
@@ -74,8 +88,10 @@ interface EditorActions {
   selectAllImages: () => void;
   deselectAllImages: () => void;
 
-  // Gallery overlay
-  openGalleryOverlay: () => void;
+  // Active tab
+  setActiveTab: (tab: EditorTab) => void;
+
+  // Gallery overlay (for replace mode)
   openGalleryForReplacement: () => void;
   closeGalleryOverlay: () => void;
 
@@ -91,7 +107,7 @@ interface EditorActions {
   // Objects
   addText: (text?: Partial<TextObject>) => void;
   addImage: (src: string, name?: string) => void;
-  setBackground: (src: string) => void;
+  setBackground: (src: string, originalPath: string) => void;
   updateObject: (id: string, updates: Partial<CanvasObject>) => void;
   deleteObject: (id: string) => void;
   duplicateObject: (id: string) => void;
@@ -125,6 +141,14 @@ interface EditorActions {
   saveTemplate: (name: string) => Promise<void>;
   loadTemplate: (templatePath: string) => Promise<void>;
   deleteTemplate: (templatePath: string) => Promise<void>;
+
+  // Table data
+  setTableTextValue: (imagePath: string, textKey: string, value: string) => void;
+  setTableTextColumn: (textKey: string, values: string[]) => void;
+  initializeTableData: () => void;
+
+  // Current template
+  clearCurrentTemplate: () => void;
 }
 
 const defaultFrame: FrameSettings = {
@@ -163,6 +187,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
     workingDirectoryName: null,
     allImages: [],
     selectedImagePaths: new Set<string>(),
+    activeTab: 'editor' as EditorTab,
     isGalleryOverlayOpen: false,
     galleryMode: 'select' as GalleryMode,
     frame: defaultFrame,
@@ -170,6 +195,8 @@ export const useEditorStore = create<EditorState & EditorActions>()(
     selectedIds: [],
     zoom: 1,
     templates: [],
+    tableData: {},
+    currentTemplateName: null,
 
     // App phase actions
     setAppPhase: (phase) =>
@@ -221,13 +248,13 @@ export const useEditorStore = create<EditorState & EditorActions>()(
         state.selectedImagePaths = new Set();
       }),
 
-    // Gallery overlay actions
-    openGalleryOverlay: () =>
+    // Active tab action
+    setActiveTab: (tab) =>
       set((state) => {
-        state.galleryMode = 'select';
-        state.isGalleryOverlayOpen = true;
+        state.activeTab = tab;
       }),
 
+    // Gallery overlay actions (for replace mode only)
     openGalleryForReplacement: () =>
       set((state) => {
         state.galleryMode = 'replace';
@@ -327,7 +354,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
         state.selectedIds = [id];
       }),
 
-    setBackground: (src) =>
+    setBackground: (src, originalPath) =>
       set((state) => {
         // Remove existing background
         state.objects = state.objects.filter((o) => o.type !== 'background');
@@ -346,6 +373,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           visible: true,
           name: 'Background',
           src,
+          originalPath,
           scaleMode: 'fill',
         };
         // Insert at beginning (bottom layer)
@@ -552,6 +580,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
         createdAt: new Date().toISOString(),
         frame: state.frame,
         objects: state.objects,
+        tableData: state.tableData,
       };
 
       try {
@@ -576,6 +605,8 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           state.frame = template.frame;
           state.objects = template.objects;
           state.selectedIds = [];
+          state.currentTemplateName = template.name;
+          state.tableData = template.tableData || {};  // Restore table data
         });
       } catch (error) {
         console.error('Failed to load template:', error);
@@ -592,5 +623,97 @@ export const useEditorStore = create<EditorState & EditorActions>()(
         throw error;
       }
     },
+
+    // Table data actions
+    setTableTextValue: (imagePath, textKey, value) =>
+      set((state) => {
+        if (!state.tableData[imagePath]) {
+          state.tableData[imagePath] = {};
+        }
+        state.tableData[imagePath][textKey] = value;
+      }),
+
+    setTableTextColumn: (textKey, values) =>
+      set((state) => {
+        // Get selected images in order
+        const selectedImages = state.allImages.filter((img) =>
+          state.selectedImagePaths.has(img.path)
+        );
+
+        // Apply values to each row
+        selectedImages.forEach((img, index) => {
+          if (index < values.length) {
+            if (!state.tableData[img.path]) {
+              state.tableData[img.path] = {};
+            }
+            state.tableData[img.path][textKey] = values[index];
+          }
+        });
+      }),
+
+    initializeTableData: () =>
+      set((state) => {
+        // Initialize empty data for all selected images
+        const textObjects = state.objects.filter((o) => o.type === 'text') as TextObject[];
+
+        state.allImages.forEach((img) => {
+          if (state.selectedImagePaths.has(img.path)) {
+            if (!state.tableData[img.path]) {
+              state.tableData[img.path] = {};
+            }
+            // Initialize with default text content
+            textObjects.forEach((textObj) => {
+              if (!state.tableData[img.path][textObj.key]) {
+                state.tableData[img.path][textObj.key] = textObj.content;
+              }
+            });
+          }
+        });
+      }),
+
+    // Clear current template (detach from template)
+    clearCurrentTemplate: () =>
+      set((state) => {
+        state.currentTemplateName = null;
+      }),
   }))
+);
+
+// Auto-save debounce logic
+let autoSaveTimeout: ReturnType<typeof setTimeout> | null = null;
+
+const scheduleAutoSave = () => {
+  const state = useEditorStore.getState();
+  if (!state.currentTemplateName || !state.workingDirectory) return;
+
+  if (autoSaveTimeout) {
+    clearTimeout(autoSaveTimeout);
+  }
+
+  autoSaveTimeout = setTimeout(async () => {
+    const currentState = useEditorStore.getState();
+    if (currentState.currentTemplateName) {
+      try {
+        await currentState.saveTemplate(currentState.currentTemplateName);
+        console.log('Auto-saved template:', currentState.currentTemplateName);
+      } catch (error) {
+        console.error('Auto-save failed:', error);
+      }
+    }
+  }, 1500);
+};
+
+// Subscribe to state changes for auto-save
+useEditorStore.subscribe(
+  (state, prevState) => {
+    // Trigger auto-save if frame, objects, or tableData changed
+    if (
+      state.currentTemplateName &&
+      (state.frame !== prevState.frame ||
+       state.objects !== prevState.objects ||
+       state.tableData !== prevState.tableData)
+    ) {
+      scheduleAutoSave();
+    }
+  }
 );

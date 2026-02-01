@@ -3,12 +3,12 @@ import styles from './FolderButton.module.css';
 
 export function FolderButton() {
   const workingDirectoryName = useEditorStore((s) => s.workingDirectoryName);
-  const openGalleryOverlay = useEditorStore((s) => s.openGalleryOverlay);
+  const setActiveTab = useEditorStore((s) => s.setActiveTab);
 
   if (!workingDirectoryName) return null;
 
   return (
-    <button className={styles.folderButton} onClick={openGalleryOverlay}>
+    <button className={styles.folderButton} onClick={() => setActiveTab('gallery')}>
       <svg
         width="16"
         height="16"

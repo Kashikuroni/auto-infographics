@@ -2151,6 +2151,12 @@
           "markdownDescription": "Allow deleting templates"
         },
         {
+          "description": "Allows generating infographics from table data",
+          "type": "string",
+          "const": "allow-generate-infographics",
+          "markdownDescription": "Allows generating infographics from table data"
+        },
+        {
           "description": "Allow getting system fonts list",
           "type": "string",
           "const": "allow-get-system-fonts",

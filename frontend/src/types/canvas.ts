@@ -24,6 +24,7 @@ export interface HeroObject extends BaseObject {
 export interface BackgroundObject extends BaseObject {
   type: 'background';
   src: string;
+  originalPath: string; // Путь к файлу для генерации в Rust
   scaleMode: 'fill' | 'fit' | 'stretch';
 }
 

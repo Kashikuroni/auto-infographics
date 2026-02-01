@@ -1,0 +1,84 @@
+.tabBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.tab {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tab:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+.tab.active {
+  background: var(--accent-color);
+  color: white;
+}
+
+.templateIndicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: var(--accent-color-light, rgba(59, 130, 246, 0.1));
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.templateLabel {
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.templateName {
+  color: var(--accent-color);
+  font-weight: 500;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detachButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 2px;
+  color: var(--accent-color);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.detachButton:hover {
+  background: var(--accent-color);
+  color: white;
+}
